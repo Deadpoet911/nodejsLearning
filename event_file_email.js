@@ -1,3 +1,30 @@
+var nodemailer = require('nodemailer');
+
+
+function SendEmail(fileName){
+    var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'deadpoet911@gmail.com',
+    pass: '123456abAB'
+  }
+});
+
+var mailOptions = {
+  from: 'deadpoet911@gmail.com',
+  to: 'gauravgupta93@gmail.com',
+  subject: 'File Uploaded using Node.js',
+  text: 'File Uploaded' + fileName
+};
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+})
+};
+//SendEmail()
 var http = require('http');
 var formidable = require('formidable');
 var fs = require('fs');
@@ -13,6 +40,7 @@ http.createServer(function (req, res) {
         res.write('File uploaded and moved!');
         res.end();
       });
+      SendEmail(files.filetoupload.name);
  });
   } else {
     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -23,3 +51,4 @@ http.createServer(function (req, res) {
     return res.end();
   }
 }).listen(8080);
+
